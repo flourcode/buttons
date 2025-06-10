@@ -1,0 +1,675 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Hover CSS — Free CSS Buttons</title>
+    
+    <meta name="description" content="An elevated collection of 99+ CSS buttons, redesigned into a slick, native-like web app experience with stunning animations and themes.">
+    <meta name="author" content="Remade by Gemini">
+    <meta name="theme-color" media="(prefers-color-scheme: light)" content="#f7f7f7">
+    <meta name="theme-color" media="(prefers-color-scheme: dark)" content="#121212">
+    <link rel="icon" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><text y=%22.9em%22 font-size=%2290%22>💎</text></svg>">
+
+    <style>
+        :root {
+            /* Color Palette (Refined) */
+            --light-bg: #f7f7f7;
+            --light-bg-secondary: #ffffff;
+            --light-bg-tertiary: #eff0f2;
+            --light-text-primary: #1d1d1f;
+            --light-text-secondary: #6e6e73;
+            --light-border: rgba(0, 0, 0, 0.1);
+            --light-blur-bg: rgba(255, 255, 255, 0.7);
+
+            --dark-bg: #121212;
+            --dark-bg-secondary: #1e1e1e;
+            --dark-bg-tertiary: #2a2a2a;
+            --dark-text-primary: #f5f5f7;
+            --dark-text-secondary: #a0a0a5;
+            --dark-border: rgba(255, 255, 255, 0.1);
+            --dark-blur-bg: rgba(28, 28, 30, 0.7);
+
+            /* Universal Variables */
+            --accent-blue: #007aff;
+            --accent-purple: #5856d6;
+            --accent-green: #34c759;
+            --accent-red: #ff3b30;
+
+            --shadow-sm: 0 2px 4px rgba(0,0,0,0.05);
+            --shadow-md: 0 4px 12px rgba(0,0,0,0.1);
+            --shadow-lg: 0 10px 30px rgba(0,0,0,0.15);
+
+            --radius-md: 16px;
+            --radius-lg: 24px;
+            --transition-snap: cubic-bezier(0.68, -0.55, 0.27, 1.55);
+            --transition-smooth: cubic-bezier(0.4, 0, 0.2, 1);
+        }
+
+        [data-theme="light"] {
+            --bg-primary: var(--light-bg);
+            --bg-secondary: var(--light-bg-secondary);
+            --bg-tertiary: var(--light-bg-tertiary);
+            --text-primary: var(--light-text-primary);
+            --text-secondary: var(--light-text-secondary);
+            --border-color: var(--light-border);
+            --bg-blur: var(--light-blur-bg);
+            color-scheme: light;
+        }
+
+        [data-theme="dark"] {
+            --bg-primary: var(--dark-bg);
+            --bg-secondary: var(--dark-bg-secondary);
+            --bg-tertiary: var(--dark-bg-tertiary);
+            --text-primary: var(--dark-text-primary);
+            --text-secondary: var(--dark-text-secondary);
+            --border-color: var(--dark-border);
+            --bg-blur: var(--dark-blur-bg);
+            color-scheme: dark;
+        }
+
+        /* Base & Reset */
+        *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+        html { scroll-behavior: smooth; }
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
+            background-color: var(--bg-primary);
+            color: var(--text-primary);
+            transition: background-color 0.3s var(--transition-smooth), color 0.3s var(--transition-smooth);
+            -webkit-font-smoothing: antialiased;
+            -moz-osx-font-smoothing: grayscale;
+        }
+        
+        /* Custom Scrollbar */
+        ::-webkit-scrollbar { width: 8px; }
+        ::-webkit-scrollbar-track { background: transparent; }
+        ::-webkit-scrollbar-thumb { background-color: var(--bg-tertiary); border-radius: 4px; }
+        ::-webkit-scrollbar-thumb:hover { background-color: var(--text-secondary); }
+
+        /* App Layout */
+        .app-container {
+            display: flex;
+            flex-direction: column;
+            min-height: 100vh;
+        }
+
+        /* Navigation */
+        .header {
+            position: sticky;
+            top: 0;
+            z-index: 1000;
+            backdrop-filter: blur(20px);
+            -webkit-backdrop-filter: blur(20px);
+            background-color: var(--bg-blur);
+            border-bottom: 1px solid var(--border-color);
+            transition: background-color 0.3s var(--transition-smooth), border-color 0.3s var(--transition-smooth);
+        }
+        .nav-content {
+            max-width: 1400px;
+            margin: 0 auto;
+            padding: 0 24px;
+            height: 70px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+        }
+        .logo {
+            font-size: 1.5rem;
+            font-weight: 700;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            text-decoration: none;
+            color: inherit;
+        }
+        .logo span {
+            background: linear-gradient(45deg, var(--accent-blue), var(--accent-purple));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+        
+        /* Animated Theme Toggle */
+        .theme-toggle {
+            background: none;
+            border: none;
+            cursor: pointer;
+            padding: 4px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: var(--text-primary);
+        }
+        .theme-toggle .icon {
+            width: 24px;
+            height: 24px;
+            transition: transform 0.5s var(--transition-snap);
+        }
+        .theme-toggle:hover .icon { transform: scale(1.1) rotate(15deg); }
+        .theme-toggle .sun-rays, .theme-toggle .moon-mask {
+            transform-origin: center;
+            transition: transform 0.5s ease-out;
+        }
+        [data-theme="dark"] .sun-rays { transform: scale(1.75); }
+        [data-theme="dark"] .moon-mask { transform: scale(0); }
+
+
+        /* Main Content Area */
+        .main-content {
+            flex-grow: 1;
+            padding: 48px 24px;
+            max-width: 1400px;
+            width: 100%;
+            margin: 0 auto;
+        }
+
+        /* Hero Section */
+        .hero {
+            text-align: center;
+            padding: 60px 0;
+            margin-bottom: 48px;
+        }
+        .hero h1 {
+            font-size: clamp(3rem, 6vw, 5rem);
+            font-weight: 800;
+            margin-bottom: 16px;
+            letter-spacing: -0.03em;
+            background: linear-gradient(90deg, var(--accent-blue), var(--accent-purple), var(--accent-red));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            animation: gradient-flow 5s ease-in-out infinite;
+            background-size: 200% auto;
+        }
+        @keyframes gradient-flow {
+            0% { background-position: 0% 50%; }
+            50% { background-position: 100% 50%; }
+            100% { background-position: 0% 50%; }
+        }
+        .hero p {
+            font-size: 1.25rem;
+            color: var(--text-secondary);
+            max-width: 650px;
+            margin: 0 auto 32px;
+            line-height: 1.6;
+        }
+
+        /* Search Bar */
+        .search-container {
+            position: relative;
+            max-width: 600px;
+            margin: 0 auto 48px;
+        }
+        .search-input {
+            width: 100%;
+            padding: 16px 56px 16px 24px;
+            font-size: 1rem;
+            border: 1px solid var(--border-color);
+            border-radius: 12px;
+            background-color: var(--bg-secondary);
+            color: var(--text-primary);
+            outline: none;
+            box-shadow: var(--shadow-sm);
+            transition: all 0.3s var(--transition-smooth);
+        }
+        .search-input:focus {
+            border-color: var(--accent-blue);
+            box-shadow: 0 0 0 3px color-mix(in srgb, var(--accent-blue) 25%, transparent);
+        }
+        .search-icon {
+            position: absolute;
+            right: 20px;
+            top: 50%;
+            transform: translateY(-50%);
+            color: var(--text-secondary);
+            width: 20px;
+            height: 20px;
+        }
+
+        /* Button Grid */
+        .button-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(350px, 1fr));
+            gap: 24px;
+        }
+        .button-card {
+            background-color: var(--bg-secondary);
+            border-radius: var(--radius-lg);
+            border: 1px solid var(--border-color);
+            padding: 24px;
+            box-shadow: var(--shadow-md);
+            transition: all 0.3s var(--transition-smooth);
+            transform: translateY(0);
+            opacity: 0;
+            animation: fade-in-up 0.5s var(--transition-smooth) forwards;
+        }
+        @keyframes fade-in-up {
+            from { opacity: 0; transform: translateY(20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+        .button-card:hover {
+            transform: translateY(-8px);
+            box-shadow: var(--shadow-lg);
+            border-color: color-mix(in srgb, var(--text-primary) 15%, transparent);
+        }
+        
+        .card-header { margin-bottom: 16px; }
+        .button-name { font-size: 1.1rem; font-weight: 600; margin-bottom: 6px; }
+        .button-category {
+            font-size: 0.8rem;
+            color: var(--text-secondary);
+            background-color: var(--bg-tertiary);
+            padding: 4px 10px;
+            border-radius: 20px;
+            display: inline-block;
+        }
+        .button-preview {
+            background-color: var(--bg-tertiary);
+            border-radius: var(--radius-md);
+            padding: 32px;
+            margin: 16px 0;
+            min-height: 120px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+        
+        /* Code Section */
+        .code-tabs {
+            display: flex;
+            background-color: var(--bg-tertiary);
+            border-radius: 10px;
+            padding: 4px;
+            margin-bottom: 12px;
+        }
+        .code-tab {
+            flex: 1;
+            padding: 8px 12px;
+            border: none;
+            background-color: transparent;
+            color: var(--text-secondary);
+            font-weight: 500;
+            border-radius: 8px;
+            cursor: pointer;
+            transition: all 0.2s var(--transition-smooth);
+            position: relative;
+        }
+        .code-tab.active {
+            background-color: var(--bg-secondary);
+            color: var(--text-primary);
+            box-shadow: var(--shadow-sm);
+        }
+        .code-block {
+            position: relative;
+            background-color: var(--bg-tertiary);
+            border-radius: var(--radius-md);
+            overflow: hidden;
+        }
+        .code-block pre {
+            padding: 16px;
+            font-family: 'SF Mono', 'Cascadia Code', 'Fira Code', monospace;
+            font-size: 0.85rem;
+            line-height: 1.6;
+            color: var(--text-secondary);
+            overflow-x: auto;
+        }
+        .copy-button {
+            position: absolute;
+            top: 12px;
+            right: 12px;
+            background-color: color-mix(in srgb, var(--bg-secondary) 50%, transparent);
+            border: 1px solid var(--border-color);
+            color: var(--text-secondary);
+            padding: 6px;
+            border-radius: 8px;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: all 0.2s var(--transition-smooth);
+        }
+        .copy-button:hover { background-color: var(--bg-secondary); color: var(--text-primary); }
+        .copy-button .icon { width: 16px; height: 16px; }
+        .copy-button .copy-text { display: none; }
+        .copy-button.copied { background-color: var(--accent-green); color: white; border-color: transparent; }
+
+        /* General Button Styles for Demos */
+        .demo-btn {
+            padding: 12px 24px;
+            border: none;
+            border-radius: 8px;
+            font-size: 1rem;
+            font-weight: 500;
+            cursor: pointer;
+            transition: all 0.3s var(--transition-smooth);
+            text-decoration: none;
+        }
+        
+        /* Skeleton Loader */
+        .skeleton-card {
+            background-color: var(--bg-secondary);
+            border-radius: var(--radius-lg);
+            border: 1px solid var(--border-color);
+            padding: 24px;
+        }
+        .skeleton {
+            background-color: var(--bg-tertiary);
+            border-radius: 8px;
+            animation: shimmer 1.5s infinite linear;
+        }
+        @keyframes shimmer {
+            0% { background-color: var(--bg-tertiary); }
+            50% { background-color: color-mix(in srgb, var(--bg-tertiary) 50%, var(--bg-secondary)); }
+            100% { background-color: var(--bg-tertiary); }
+        }
+        .skeleton.title { width: 60%; height: 20px; margin-bottom: 10px; }
+        .skeleton.tag { width: 30%; height: 24px; border-radius: 20px; }
+        .skeleton.preview { width: 100%; height: 120px; margin: 16px 0; border-radius: var(--radius-md); }
+        .skeleton.tabs { width: 100%; height: 40px; }
+
+        /* Footer */
+        .footer {
+            text-align: center;
+            padding: 48px 24px;
+            border-top: 1px solid var(--border-color);
+            color: var(--text-secondary);
+            font-size: 0.9rem;
+        }
+
+        /* Responsive */
+        @media (max-width: 768px) {
+            .nav-content, .main-content { padding: 0 16px; }
+            .hero h1 { font-size: 2.5rem; }
+            .hero p { font-size: 1.1rem; }
+            .main-content { padding-top: 24px; padding-bottom: 24px; }
+            .button-grid { grid-template-columns: 1fr; gap: 16px; }
+        }
+    </style>
+</head>
+<body data-theme="light">
+
+    <div class="app-container">
+        <header class="header">
+            <nav class="nav-content">
+                <a href="#" class="logo">
+                    💎
+                    <span>99 Buttons</span>
+                </a>
+                <button class="theme-toggle" id="themeToggle" aria-label="Toggle theme">
+                    <svg class="icon" aria-hidden="true" fill="currentColor" viewBox="0 0 32 32">
+                        <circle class="moon-mask" cx="16" cy="16" r="12" fill="var(--bg-primary)"></circle>
+                        <g class="sun-rays" stroke="currentColor" stroke-width="2" stroke-linecap="round">
+                            <line x1="16" y1="1" x2="16" y2="5"></line>
+                            <line x1="16" y1="27" x2="16" y2="31"></line>
+                            <line x1="4.6" y1="4.6" x2="7.4" y2="7.4"></line>
+                            <line x1="24.6" y1="24.6" x2="27.4" y2="27.4"></line>
+                            <line x1="1" y1="16" x2="5" y2="16"></line>
+                            <line x1="27" y1="16"x2="31" y2="16"></line>
+                            <line x1="4.6" y1="27.4" x2="7.4" y2="24.6"></line>
+                            <line x1="24.6" y1="7.4" x2="27.4" y2="4.6"></line>
+                        </g>
+                        <circle cx="16" cy="16" r="8" fill="currentColor"></circle>
+                    </svg>
+                </button>
+            </nav>
+        </header>
+
+        <main class="main-content">
+            <section class="hero">
+                <h1>99+ Free CSS Buttons</h1>
+                <p>An elevated collection of 99+ copy-paste buttons built for modern web projects.</p>
+                <div class="search-container">
+                    <input type="text" class="search-input" id="searchInput" placeholder="Search by name, style, or color...">
+                     <svg class="search-icon" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" />
+                    </svg>
+                </div>
+            </section>
+
+            <div class="button-grid" id="buttonGrid">
+                </div>
+        </main>
+
+        <footer class="footer">
+            <p>&copy; 2025 99buttons.com. All buttons are free to use.</p>
+        </footer>
+    </div>
+
+
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+
+            // --- STATE MANAGEMENT --- //
+            const state = {
+                buttons: [],
+                theme: localStorage.getItem('theme') || 'light',
+                searchTerm: '',
+            };
+
+            // --- DOM ELEMENTS --- //
+            const themeToggle = document.getElementById('themeToggle');
+            const searchInput = document.getElementById('searchInput');
+            const buttonGrid = document.getElementById('buttonGrid');
+            const body = document.body;
+
+            // --- ICONS --- //
+            const icons = {
+                copy: `<svg class="icon" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 16H6a2 2 0 01-2-2V6a2 2 0 012-2h8a2 2 0 012 2v2m-6 12h8a2 2 0 002-2v-8a2 2 0 00-2-2h-8a2 2 0 00-2 2v8a2 2 0 002 2z" /></svg>`,
+                copied: `<svg class="icon" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7" /></svg>`
+            };
+            
+            // --- DATA GENERATION --- //
+            function generateInitialButtons() {
+                // Each `css` property now contains a full, valid CSS rule string.
+                const initialData = [
+                    { name: "iOS Blue", category: "iOS", className: "btn-ios-blue", css: `.demo-btn.btn-ios-blue { background: #007aff; color: white; } .demo-btn.btn-ios-blue:hover { background: #005bb5; transform: translateY(-2px); }` },
+                    { name: "3D Effect", category: "3D", className: "btn-3d", css: `.demo-btn.btn-3d { background: #e74c3c; color: white; border-radius: 5px; box-shadow: 0 5px #c0392b; transition: all 0.1s ease-in-out; } .demo-btn.btn-3d:hover { box-shadow: 0 3px #c0392b; transform: translateY(2px); }` },
+                    { name: "Liquid Glass", category: "Glass", className: "btn-glass", css: `.demo-btn.btn-glass { background: rgba(255, 255, 255, 0.1); backdrop-filter: blur(10px); -webkit-backdrop-filter: blur(10px); border: 1px solid rgba(255, 255, 255, 0.2); color: var(--text-primary); } .demo-btn.btn-glass:hover { background: rgba(255, 255, 255, 0.2); transform: scale(1.05); }` },
+                    { name: "Neumorphic", category: "Neumorphic", className: "btn-neumorphic", css: `.demo-btn.btn-neumorphic { background: var(--bg-tertiary); color: var(--text-secondary); box-shadow: 5px 5px 10px #bebebe, -5px -5px 10px #ffffff; } [data-theme='dark'] .demo-btn.btn-neumorphic { box-shadow: 5px 5px 10px #1a1a1a, -5px -5px 10px #282828; } .demo-btn.btn-neumorphic:active { box-shadow: inset 5px 5px 10px #bebebe, inset -5px -5px 10px #ffffff; } [data-theme='dark'] .demo-btn.btn-neumorphic:active { box-shadow: inset 5px 5px 10px #1a1a1a, inset -5px -5px 10px #282828; }` }
+                ];
+
+                const colors = { blue: '#007aff', purple: '#5856d6', green: '#34c759', orange: '#ff9500', red: '#ff3b30', pink: '#ff2d92' };
+                const styles = ['gradient', 'outline', 'solid', 'ghost', 'pill', 'glow'];
+
+                let allButtons = [...initialData];
+
+                for (let i = allButtons.length; i < 99; i++) {
+                    const colorName = Object.keys(colors)[i % Object.keys(colors).length];
+                    const colorHex = colors[colorName];
+                    const style = styles[i % styles.length];
+                    const className = `btn-gen-${i}`;
+                    const name = `${colorName.charAt(0).toUpperCase() + colorName.slice(1)} ${style.charAt(0).toUpperCase() + style.slice(1)}`;
+                    
+                    allButtons.push({
+                        name: name,
+                        category: style,
+                        className: className,
+                        css: generateButtonCSS(className, colorHex, style)
+                    });
+                }
+                
+                allButtons.forEach(btn => {
+                    btn.html = `<button class="demo-btn ${btn.className}">${btn.name}</button>`;
+                });
+
+                state.buttons = allButtons;
+            }
+
+            function generateButtonCSS(className, color, style) {
+                const selector = `.demo-btn.${className}`;
+                const hoverBase = `transform: translateY(-3px); box-shadow: var(--shadow-md);`;
+
+                switch (style) {
+                    case 'gradient': 
+                        return `${selector} { background: linear-gradient(45deg, ${color}, ${adjustColor(color, 40)}); color: white; transform: translateY(0); box-shadow: var(--shadow-sm); } ${selector}:hover { ${hoverBase} }`;
+                    case 'outline': 
+                        return `${selector} { background: transparent; color: ${color}; border: 2px solid ${color}; } ${selector}:hover { background: ${color}; color: white; }`;
+                    case 'ghost': 
+                        return `${selector} { background: ${adjustColor(color, 0, 0.1)}; color: ${color}; } ${selector}:hover { background: ${adjustColor(color, 0, 0.2)}; }`;
+                    case 'pill': 
+                        return `${selector} { background: ${color}; color: white; transform: translateY(0); box-shadow: var(--shadow-sm); border-radius: 50px; } ${selector}:hover { ${hoverBase} }`;
+                    case 'glow': 
+                        return `${selector} { background: ${color}; color: white; box-shadow: 0 0 15px ${adjustColor(color, 0, 0.3)}; } ${selector}:hover { box-shadow: 0 0 25px ${adjustColor(color, 0, 0.5)}; transform: translateY(-2px) scale(1.02); }`;
+                    default: // solid
+                        return `${selector} { background: ${color}; color: white; transform: translateY(0); box-shadow: var(--shadow-sm); } ${selector}:hover { ${hoverBase} background: ${adjustColor(color, -20)}; }`;
+                }
+            }
+            
+            // --- RENDER & UI FUNCTIONS --- //
+            function renderUI() {
+                setTheme(state.theme);
+                renderSkeletonLoader();
+
+                setTimeout(() => {
+                    renderButtons();
+                    injectButtonStyles();
+                }, 500);
+            }
+
+            function renderButtons() {
+                const filteredButtons = state.buttons.filter(button =>
+                    button.name.toLowerCase().includes(state.searchTerm) ||
+                    button.category.toLowerCase().includes(state.searchTerm)
+                );
+                
+                buttonGrid.innerHTML = ''; 
+                
+                if (filteredButtons.length === 0) {
+                    buttonGrid.innerHTML = `<p style="grid-column: 1 / -1; text-align: center; color: var(--text-secondary);">No buttons found for "${escapeHtml(state.searchTerm)}".</p>`;
+                    return;
+                }
+
+                const fragment = document.createDocumentFragment();
+                filteredButtons.forEach((button, index) => {
+                    const card = document.createElement('div');
+                    card.className = 'button-card';
+                    card.style.animationDelay = `${index * 30}ms`;
+                    card.innerHTML = `
+                        <div class="card-header">
+                            <h3 class="button-name">${button.name}</h3>
+                            <span class="button-category">${button.category}</span>
+                        </div>
+                        <div class="button-preview">${button.html}</div>
+                        <div class="code-section" data-name="${button.className}">
+                            <div class="code-tabs">
+                                <button class="code-tab active" data-type="html">HTML</button>
+                                <button class="code-tab" data-type="css">CSS</button>
+                            </div>
+                            <div class="code-block">
+                                <button class="copy-button" title="Copy code">${icons.copy}</button>
+                                <pre><code>${escapeHtml(button.html)}</code></pre>
+                            </div>
+                        </div>
+                    `;
+                    fragment.appendChild(card);
+                });
+                buttonGrid.appendChild(fragment);
+            }
+            
+            function renderSkeletonLoader() {
+                 buttonGrid.innerHTML = '';
+                 for (let i = 0; i < 9; i++) {
+                     const skeletonCard = `
+                        <div class="skeleton-card">
+                            <div class="skeleton title"></div>
+                            <div class="skeleton tag"></div>
+                            <div class="skeleton preview"></div>
+                            <div class="skeleton tabs"></div>
+                        </div>
+                     `;
+                     buttonGrid.insertAdjacentHTML('beforeend', skeletonCard);
+                 }
+            }
+            
+            function injectButtonStyles() {
+                const existingStyle = document.getElementById('dynamic-button-styles');
+                if (existingStyle) existingStyle.remove();
+
+                const styleSheet = document.createElement('style');
+                styleSheet.id = 'dynamic-button-styles';
+                styleSheet.textContent = state.buttons.map(btn => btn.css).join('\n\n');
+                document.head.appendChild(styleSheet);
+            }
+            
+            function setTheme(theme) {
+                state.theme = theme;
+                body.setAttribute('data-theme', theme);
+                localStorage.setItem('theme', theme);
+            }
+            
+            function handleCodeSwitch(e) {
+                const tab = e.target.closest('.code-tab');
+                if (!tab) return;
+                
+                const section = tab.closest('.code-section');
+                const button = state.buttons.find(b => b.className === section.dataset.name);
+                if (!button) return;
+
+                const type = tab.dataset.type;
+                const code = type === 'html' ? button.html : button.css;
+                
+                section.querySelector('.code-block pre code').textContent = escapeHtml(code);
+                section.querySelectorAll('.code-tab').forEach(t => t.classList.remove('active'));
+                tab.classList.add('active');
+            }
+
+            function handleCopyCode(e) {
+                const copyBtn = e.target.closest('.copy-button');
+                if (!copyBtn) return;
+                
+                const code = copyBtn.nextElementSibling.textContent;
+                navigator.clipboard.writeText(code).then(() => {
+                    copyBtn.innerHTML = icons.copied;
+                    copyBtn.classList.add('copied');
+                    setTimeout(() => {
+                        copyBtn.innerHTML = icons.copy;
+                        copyBtn.classList.remove('copied');
+                    }, 2000);
+                });
+            }
+
+            // --- HELPERS --- //
+            function escapeHtml(text) {
+                const div = document.createElement('div');
+                div.textContent = text;
+                return div.innerHTML;
+            }
+
+            function adjustColor(hex, amount, alpha) {
+                let color = hex.startsWith('#') ? hex.slice(1) : hex;
+                let num = parseInt(color, 16);
+                let r = (num >> 16) + amount;
+                if (r > 255) r = 255; else if (r < 0) r = 0;
+                let g = ((num >> 8) & 0x00FF) + amount;
+                if (g > 255) g = 255; else if (g < 0) g = 0;
+                let b = (num & 0x0000FF) + amount;
+                if (b > 255) b = 255; else if (b < 0) b = 0;
+
+                if (typeof alpha !== 'undefined') {
+                    return `rgba(${r}, ${g}, ${b}, ${alpha})`;
+                }
+                
+                return "#" + (b | (g << 8) | (r << 16)).toString(16).padStart(6, '0');
+            }
+
+            // --- EVENT LISTENERS --- //
+            themeToggle.addEventListener('click', () => {
+                setTheme(state.theme === 'light' ? 'dark' : 'light');
+            });
+
+            searchInput.addEventListener('input', (e) => {
+                state.searchTerm = e.target.value.toLowerCase().trim();
+                renderButtons();
+            });
+            
+            buttonGrid.addEventListener('click', (e) => {
+                handleCodeSwitch(e);
+                handleCopyCode(e);
+            });
+            
+            // --- INITIALIZATION --- //
+            generateInitialButtons();
+            renderUI();
+        });
+    </script>
+</body>
+</html>
